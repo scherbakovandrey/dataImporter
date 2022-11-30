@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use Traversable;
 use App\Adapter\StorageAdapterInterface;
 use App\Exception\DataImporterContextException;
 
 class DataImporterContext
 {
-    public function __construct(private Traversable $storageAdapters)
+    public function __construct(private readonly \Traversable $storageAdapters)
     {
     }
 

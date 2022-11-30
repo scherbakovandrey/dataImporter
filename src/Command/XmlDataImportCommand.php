@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Exception\DataImporterContextException;
+use App\Service\DataImporterContext;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
-use App\Service\DataImporterContext;
-use App\Exception\DataImporterContextException;
+use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'app:data-import')]
 class XmlDataImportCommand extends Command
 {
-    public function __construct(private DataImporterContext $dataImporterContext)
+    public function __construct(private readonly DataImporterContext $dataImporterContext)
     {
         parent::__construct();
     }
@@ -38,18 +38,15 @@ class XmlDataImportCommand extends Command
 
         $fileContents = file_get_contents($filename);
 
-        try
-        {
+        try {
             $this->dataImporterContext->handle($fileContents, $type);
-        }
-        catch (DataImporterContextException $exception)
-        {
+        } catch (DataImporterContextException $exception) {
             $logger->error($exception->getMessage());
 
             return Command::FAILURE;
         }
 
-        $output->write('The file ' . $filename . ' was imported successfully!');
+        $output->write('The file '.$filename.' was imported successfully!');
 
         return Command::SUCCESS;
     }

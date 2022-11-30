@@ -8,7 +8,7 @@ use App\Adapter\StorageAdapterInterface;
 
 class XmlDataImporter
 {
-    public function __construct(private StorageAdapterInterface $storageAdapter)
+    public function __construct(private readonly StorageAdapterInterface $storageAdapter)
     {
     }
 
@@ -18,8 +18,7 @@ class XmlDataImporter
 
         $this->storageAdapter->prepare();
 
-        foreach ($xml as $element)
-        {
+        foreach ($xml as $element) {
             $fields = [];
             $fields['entity_id'] = $element->entity_id;
             $fields['price'] = $element->price;

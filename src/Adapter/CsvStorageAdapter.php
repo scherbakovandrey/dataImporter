@@ -23,8 +23,7 @@ class CsvStorageAdapter implements StorageAdapterInterface
     {
         $this->fp = fopen('file.csv', 'w');
 
-        if (!$this->fp)
-        {
+        if (!$this->fp) {
             throw new CsvStorageAdapterException('Opening CSV file error!');
         }
     }
@@ -34,9 +33,8 @@ class CsvStorageAdapter implements StorageAdapterInterface
      */
     public function store(array $fields): void
     {
-        if (!fputcsv($this->fp, $fields))
-        {
-           throw new CsvStorageAdapterException('Writing CSV file error!');
+        if (!fputcsv($this->fp, $fields)) {
+            throw new CsvStorageAdapterException('Writing CSV file error!');
         }
     }
 
@@ -45,8 +43,7 @@ class CsvStorageAdapter implements StorageAdapterInterface
      */
     public function finish(): void
     {
-        if (!fclose($this->fp))
-        {
+        if (!fclose($this->fp)) {
             throw new CsvStorageAdapterException('Closing CSV file error!');
         }
     }
