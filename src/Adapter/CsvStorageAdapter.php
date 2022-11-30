@@ -11,6 +11,8 @@ class CsvStorageAdapter implements StorageAdapterInterface
     /** @var resource|null */
     private $fp;
 
+    private string $filename = 'output.csv';
+
     public function supports(string $type): bool
     {
         return 'csv' === $type;
@@ -21,7 +23,7 @@ class CsvStorageAdapter implements StorageAdapterInterface
      */
     public function prepare(): void
     {
-        $this->fp = fopen('file.csv', 'w');
+        $this->fp = fopen($this->filename, 'w');
 
         if (!$this->fp) {
             throw new CsvStorageAdapterException('Opening CSV file error!');
@@ -46,5 +48,10 @@ class CsvStorageAdapter implements StorageAdapterInterface
         if (!fclose($this->fp)) {
             throw new CsvStorageAdapterException('Closing CSV file error!');
         }
+    }
+
+    public function setFilename(string $filename)
+    {
+        $this->filename = $filename;
     }
 }

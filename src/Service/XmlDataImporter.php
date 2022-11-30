@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Adapter\StorageAdapterInterface;
+use App\Exception\XmlDataImporterException;
 
 class XmlDataImporter
 {
@@ -12,8 +13,15 @@ class XmlDataImporter
     {
     }
 
+    /**
+     * @throws XmlDataImporterException
+     */
     public function process(string $fileContents): void
     {
+        if (empty($fileContents)) {
+            throw new XmlDataImporterException('The file contents of the XML file is empty!');
+        }
+
         $xml = simplexml_load_string($fileContents);
 
         $this->storageAdapter->prepare();
