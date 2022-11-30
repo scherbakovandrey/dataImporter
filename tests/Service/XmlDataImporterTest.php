@@ -3,9 +3,9 @@
 namespace App\Tests\Service;
 
 use App\Adapter\StorageAdapterInterface;
+use App\Exception\XmlDataImporterException;
 use App\Service\XmlDataImporter;
 use PHPUnit\Framework\TestCase;
-use App\Exception\XmlDataImporterException;
 
 class XmlDataImporterTest extends TestCase
 {
@@ -30,7 +30,7 @@ class XmlDataImporterTest extends TestCase
         $storageAdapter
             ->expects($this->once())
             ->method('prepare')
-            ;
+        ;
 
         $storageAdapter
             ->expects($this->once())
