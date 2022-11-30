@@ -6,6 +6,7 @@ namespace App\Service;
 
 use App\Adapter\StorageAdapterInterface;
 use App\Exception\DataImporterContextException;
+use App\Exception\XmlDataImporterException;
 
 class DataImporterContext
 {
@@ -14,7 +15,7 @@ class DataImporterContext
     }
 
     /**
-     * @throws DataImporterContextException
+     * @throws DataImporterContextException|XmlDataImporterException
      */
     public function handle(string $fileContents, string $type): void
     {
@@ -27,6 +28,6 @@ class DataImporterContext
             }
         }
 
-        throw new DataImporterContextException('Invalid storage adapter');
+        throw new DataImporterContextException('Error: invalid storage adapter!');
     }
 }

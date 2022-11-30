@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Exception\DataImporterContextException;
+use App\Exception\XmlDataImporterException;
 use App\Service\DataImporterContext;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -36,17 +37,17 @@ class XmlDataImportCommand extends Command
         $filename = $input->getArgument('filename');
         $type = $input->getArgument('type') ? $input->getArgument('type') : 'csv';
 
-        $fileContents = file_get_contents($filename);
+        $fileContents = file_get_contents($filename); // todo: check this on error as well
 
         try {
             $this->dataImporterContext->handle($fileContents, $type);
-        } catch (DataImporterContextException $exception) {
+        } catch (DataImporterContextException|XmlDataImporterException $exception) {
             $logger->error($exception->getMessage());
 
             return Command::FAILURE;
         }
 
-        $output->write('The file '.$filename.' was imported successfully!');
+        $output->write('The file '.$filename.' was imported successfully, CSV filename: output.csv');
 
         return Command::SUCCESS;
     }
