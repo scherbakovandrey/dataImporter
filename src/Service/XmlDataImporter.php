@@ -29,6 +29,11 @@ class XmlDataImporter
             throw new XmlDataImporterException('Cannot open XML file!');
         }
 
+        if (!$xml)
+        {
+            throw new XmlDataImporterException('Cannot open XML file!');
+        }
+
         $this->storageAdapter->prepare();
 
         // Note: if the parser doesn't find the '<item>' in the XML file it will be working forever

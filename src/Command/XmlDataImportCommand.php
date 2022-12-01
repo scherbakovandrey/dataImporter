@@ -11,13 +11,13 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
+use Psr\Log\LoggerInterface;
 
 #[AsCommand(name: 'app:data-import')]
 class XmlDataImportCommand extends Command
 {
-    public function __construct(private readonly DataImporterContext $dataImporterContext)
+    public function __construct(private readonly DataImporterContext $dataImporterContext, private readonly LoggerInterface $logger)
     {
         parent::__construct();
     }
@@ -32,15 +32,13 @@ class XmlDataImportCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $logger = new ConsoleLogger($output);
-
         $filename = $input->getArgument('filename');
         $type = $input->getArgument('type') ? $input->getArgument('type') : 'csv';
 
         try {
             $this->dataImporterContext->handle($filename, $type);
         } catch (DataImporterContextException|XmlDataImporterException $exception) {
-            $logger->error($exception->getMessage());
+            $this->logger->error($exception->getMessage());
 
             return Command::FAILURE;
         }
