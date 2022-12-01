@@ -40,7 +40,11 @@ class XmlDataImporter
             }
         }
         do {
-            $object = simplexml_load_string($xml->readOuterXml());
+            try {
+                $object = simplexml_load_string($xml->readOuterXml());
+            } catch (\Exception $e) {
+                throw new XmlDataImporterException('Cannot process the XML file: ' . $e->getMessage());
+            }
             if (false === $object) {
                 throw new XmlDataImporterException('Cannot process the XML file!');
             }
