@@ -4,50 +4,37 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Exception\DataImporterContextException;
-use App\Exception\XmlDataImporterException;
-use App\Service\DataImporterContext;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'app:data-import')]
-class XmlDataImportCommand extends Command
+#[AsCommand(name: 'app:generate-file')]
+class GenerateXmlFileCommand extends Command
 {
-    public function __construct(private readonly DataImporterContext $dataImporterContext)
-    {
-        parent::__construct();
-    }
-
-    protected function configure(): void
-    {
-        $this
-            ->addArgument('filename', InputArgument::REQUIRED, 'The local or remote name of the XML file')
-            ->addArgument('type', InputArgument::OPTIONAL, 'Type of the import [supported types: CSV]')
-        ;
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $logger = new ConsoleLogger($output);
+        $rooms = 100000;
+        $datesPerRoom = 1000;
 
-        $filename = $input->getArgument('filename');
-        $type = $input->getArgument('type') ? $input->getArgument('type') : 'csv';
-
-        $fileContents = file_get_contents($filename); // todo: check this on error as well
-
-        try {
-            $this->dataImporterContext->handle($fileContents, $type);
-        } catch (DataImporterContextException|XmlDataImporterException $exception) {
-            $logger->error($exception->getMessage());
-
-            return Command::FAILURE;
+        $pregeneratedDates = [];
+        $date = new \DateTime();
+        for ($i = 0; $i < $datesPerRoom; ++$i) {
+            $date->modify('+1 day');
+            $pregeneratedDates[] = $date->format('Y-m-d');
         }
 
-        $output->write('The file '.$filename.' was imported successfully, CSV filename: output.csv');
+        echo '<hotel>';
+        echo "\t<rooms>";
+        for ($i = 0; $i < $rooms; ++$i) {
+            echo "\t\t<room id=\"$i\">";
+            foreach ($pregeneratedDates as $date) {
+                echo "\t\t\t<vacancy date=\"$date\">".mt_rand(0, 1)."</vacancy>\n";
+            }
+            echo "\t\t</room>";
+        }
+        echo "\t</rooms>";
+        echo '</hotel>';
 
         return Command::SUCCESS;
     }

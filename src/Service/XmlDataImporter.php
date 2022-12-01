@@ -16,23 +16,55 @@ class XmlDataImporter
     /**
      * @throws XmlDataImporterException
      */
-    public function process(string $fileContents): void
+    public function process(string $filename): void
     {
-        if (empty($fileContents)) {
-            throw new XmlDataImporterException('The file contents of the XML file is empty!');
+        if (empty($filename)) {
+            throw new XmlDataImporterException('Filename is empty!');
         }
 
-        $xml = simplexml_load_string($fileContents);
+        try {
+            $xml = \XMLReader::open($filename);
+        } catch (\Exception $e) {
+            throw new XmlDataImporterException('Cannot open XML file!');
+        }
 
         $this->storageAdapter->prepare();
 
-        foreach ($xml as $element) {
+        // Note: if the parser doesn't find the '<item>' in the XML file it will be working forever
+        while ('item' !== $xml->name) {
+            try {
+                $xml->read();
+            } catch (\Exception $e) {
+                throw new XmlDataImporterException('Cannot read the XML file!');
+            }
+        }
+        do {
+            $object = simplexml_load_string($xml->readOuterXml());
+            if (false === $object) {
+                throw new XmlDataImporterException('Cannot process the XML file!');
+            }
+
             $fields = [];
-            $fields['entity_id'] = $element->entity_id;
-            $fields['price'] = $element->price;
+            $fields['entity_id'] = (string) $object->entity_id;
+            $fields['sku'] = (string) $object->sku;
+            $fields['name'] = (string) $object->name;
+            $fields['description'] = (string) $object->description;
+            $fields['shortdesc'] = (string) $object->shortdesc;
+            $fields['price'] = (string) $object->price;
+            $fields['link'] = (string) $object->link;
+            $fields['image'] = (string) $object->image;
+            $fields['Brand'] = (string) $object->Brand;
+            $fields['Rating'] = (string) $object->Rating;
+            $fields['CaffeineType'] = (string) $object->CaffeineType;
+            $fields['Count'] = (string) $object->Count;
+            $fields['Flavored'] = (string) $object->Flavored;
+            $fields['Seasonal'] = (string) $object->Seasonal;
+            $fields['Instock'] = (string) $object->Instock;
+            $fields['Facebook'] = (string) $object->Facebook;
+            $fields['IsKCup'] = (string) $object->IsKCup;
 
             $this->storageAdapter->store($fields);
-        }
+        } while ($xml->next('item'));
 
         $this->storageAdapter->finish();
     }

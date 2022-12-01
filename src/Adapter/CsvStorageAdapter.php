@@ -11,6 +11,14 @@ class CsvStorageAdapter implements StorageAdapterInterface
     /** @var resource|null */
     private $fp;
 
+    private string $separator = ',';
+
+    private string $enclosure = '"';
+
+    private string $escape = '\\';
+
+    private string $eol = "\n";
+
     private string $filename = 'output.csv';
 
     public function supports(string $type): bool
@@ -35,7 +43,7 @@ class CsvStorageAdapter implements StorageAdapterInterface
      */
     public function store(array $fields): void
     {
-        if (!fputcsv($this->fp, $fields)) {
+        if (!fputcsv($this->fp, $fields, $this->separator, $this->enclosure, $this->escape, $this->eol)) {
             throw new CsvStorageAdapterException('Writing CSV file error!');
         }
     }
@@ -53,5 +61,25 @@ class CsvStorageAdapter implements StorageAdapterInterface
     public function setFilename(string $filename)
     {
         $this->filename = $filename;
+    }
+
+    public function setSeparator(string $separator): void
+    {
+        $this->separator = $separator;
+    }
+
+    public function setEnclosure(string $enclosure): void
+    {
+        $this->enclosure = $enclosure;
+    }
+
+    public function setEscape(string $escape): void
+    {
+        $this->escape = $escape;
+    }
+
+    public function setEol(string $eol): void
+    {
+        $this->eol = $eol;
     }
 }

@@ -12,7 +12,7 @@ class XmlDataImporterTest extends TestCase
     public function testEmptyFileContents(): void
     {
         $this->expectException(XmlDataImporterException::class);
-        $this->expectExceptionMessage('The file contents of the XML file is empty!');
+        $this->expectExceptionMessage('Filename is empty!');
 
         $storageAdapter = $this->createMock(StorageAdapterInterface::class);
 
@@ -42,6 +42,10 @@ class XmlDataImporterTest extends TestCase
             ->method('finish')
         ;
 
-        $xmlDataImporter->process('<?xml version="1.0" encoding="utf-8"?><catalog><item><entity_id>340</entity_id></item></catalog>');
+        $tempDirectory = sys_get_temp_dir();
+        $testFilename = $tempDirectory.'/test.xml';
+        file_put_contents($testFilename, '<?xml version="1.0" encoding="utf-8"?><catalog><item><entity_id>340</entity_id></item></catalog>');
+
+        $xmlDataImporter->process($testFilename);
     }
 }

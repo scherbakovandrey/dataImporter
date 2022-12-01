@@ -37,10 +37,8 @@ class XmlDataImportCommand extends Command
         $filename = $input->getArgument('filename');
         $type = $input->getArgument('type') ? $input->getArgument('type') : 'csv';
 
-        $fileContents = file_get_contents($filename); // todo: check this on error as well
-
         try {
-            $this->dataImporterContext->handle($fileContents, $type);
+            $this->dataImporterContext->handle($filename, $type);
         } catch (DataImporterContextException|XmlDataImporterException $exception) {
             $logger->error($exception->getMessage());
 

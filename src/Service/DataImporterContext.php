@@ -17,17 +17,17 @@ class DataImporterContext
     /**
      * @throws DataImporterContextException|XmlDataImporterException
      */
-    public function handle(string $fileContents, string $type): void
+    public function handle(string $filename, string $type): void
     {
         /** @var StorageAdapterInterface $storageAdapter */
         foreach ($this->storageAdapters as $storageAdapter) {
             if ($storageAdapter->supports($type)) {
-                (new XmlDataImporter($storageAdapter))->process($fileContents);
+                (new XmlDataImporter($storageAdapter))->process($filename);
 
                 return;
             }
         }
 
-        throw new DataImporterContextException('Error: invalid storage adapter!');
+        throw new DataImporterContextException('Invalid storage adapter!');
     }
 }
