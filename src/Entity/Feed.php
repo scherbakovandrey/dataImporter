@@ -170,6 +170,7 @@ class Feed implements StoreAbleInterface
 
     public function toArray(): array
     {
+        // saved initial XML naming
         return [
             'entity_id' => $this->entityId,
             'CategoryName' => $this->categoryName,
