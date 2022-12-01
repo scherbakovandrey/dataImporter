@@ -7,6 +7,6 @@ WORKDIR /usr/src/app
 
 RUN composer install --no-interaction --prefer-dist
 
-RUN export APP_ENV=prod
+ENV APP_ENV=prod
 
 CMD ["php", "bin/console", "app:data-import"]
