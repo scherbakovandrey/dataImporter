@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Adapter;
 
+use App\Entity\StoreAbleInterface;
 use App\Exception\CsvStorageAdapterException;
 
 class CsvStorageAdapter implements StorageAdapterInterface
@@ -41,9 +42,9 @@ class CsvStorageAdapter implements StorageAdapterInterface
     /**
      * @throws CsvStorageAdapterException
      */
-    public function store(array $fields): void
+    public function store(StoreAbleInterface $entity): void
     {
-        if (!fputcsv($this->fp, $fields, $this->separator, $this->enclosure, $this->escape, $this->eol)) {
+        if (!fputcsv($this->fp, $entity->toArray(), $this->separator, $this->enclosure, $this->escape, $this->eol)) {
             throw new CsvStorageAdapterException('Writing CSV file error!');
         }
     }

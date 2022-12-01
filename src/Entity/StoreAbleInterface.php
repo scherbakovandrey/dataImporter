@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+namespace App\Entity;
+
 interface StoreAbleInterface
 {
-    public function seriliaze();
+    public function toArray(): array;
 }

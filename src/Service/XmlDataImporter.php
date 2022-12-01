@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Adapter\StorageAdapterInterface;
+use App\Entity\Feed;
 use App\Exception\XmlDataImporterException;
 
 class XmlDataImporter
@@ -44,27 +45,28 @@ class XmlDataImporter
                 throw new XmlDataImporterException('Cannot process the XML file!');
             }
 
-            $fields = [];
-            $fields['entity_id'] = (string) $object->entity_id;
-            $fields['CategoryName'] = (string) $object->CategoryName;
-            $fields['sku'] = (string) $object->sku;
-            $fields['name'] = (string) $object->name;
-            $fields['description'] = (string) $object->description;
-            $fields['shortdesc'] = (string) $object->shortdesc;
-            $fields['price'] = (string) $object->price;
-            $fields['link'] = (string) $object->link;
-            $fields['image'] = (string) $object->image;
-            $fields['Brand'] = (string) $object->Brand;
-            $fields['Rating'] = (string) $object->Rating;
-            $fields['CaffeineType'] = (string) $object->CaffeineType;
-            $fields['Count'] = (string) $object->Count;
-            $fields['Flavored'] = (string) $object->Flavored;
-            $fields['Seasonal'] = (string) $object->Seasonal;
-            $fields['Instock'] = (string) $object->Instock;
-            $fields['Facebook'] = (string) $object->Facebook;
-            $fields['IsKCup'] = (string) $object->IsKCup;
+            $feed = new Feed();
+            $feed
+                ->setEntityId((string) $object->entity_id)
+                ->setCategoryName((string) $object->CategoryName)
+                ->setSku((string) $object->sku)
+                ->setName((string) $object->name)
+                ->setDescription((string) $object->description)
+                ->setShortDescription((string) $object->shortdesc)
+                ->setPrice((string) $object->price)
+                ->setLink((string) $object->link)
+                ->setImage((string) $object->image)
+                ->setBrand((string) $object->Brand)
+                ->setRating((string) $object->Rating)
+                ->setCaffeineType((string) $object->CaffeineType)
+                ->setCount((string) $object->Count)
+                ->setFlavored((string) $object->Flavored)
+                ->setSeasonal((string) $object->Seasonal)
+                ->setInstock((string) $object->Instock)
+                ->setFacebook((string) $object->Facebook)
+                ->setIsKCup((string) $object->IsKCup);
 
-            $this->storageAdapter->store($fields);
+            $this->storageAdapter->store($feed);
         } while ($xml->next('item'));
 
         $this->storageAdapter->finish();

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Adapter;
 
+use App\Entity\StoreAbleInterface;
+
 class MySqlStorageAdapter implements StorageAdapterInterface
 {
     public function supports(string $type): bool
@@ -16,9 +18,10 @@ class MySqlStorageAdapter implements StorageAdapterInterface
         // TODO: Implement prepare() method.
     }
 
-    public function store(array $fields): void
+    public function store(StoreAbleInterface $entity): void
     {
         // TODO: Implement store() method.
+        // $entity->toArray() or use as Doctrine entity class
     }
 
     public function finish(): void

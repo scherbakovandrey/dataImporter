@@ -3,6 +3,7 @@
 namespace App\Tests\Service;
 
 use App\Adapter\StorageAdapterInterface;
+use App\Entity\Feed;
 use App\Exception\XmlDataImporterException;
 use App\Service\XmlDataImporter;
 use PHPUnit\Framework\TestCase;
@@ -35,29 +36,31 @@ class XmlDataImporterTest extends TestCase
             ->method('prepare')
         ;
 
+        $feed = new Feed();
+        $feed
+            ->setEntityId('340')
+            ->setCategoryName('Green Mountain Ground Coffee')
+            ->setSku('20')
+            ->setName('Green Mountain Coffee French Roast Ground Coffee 24 2.2oz Bag')
+            ->setDescription('Item description')
+            ->setShortDescription('Green Mountain Coffee French Roast Ground Coffee 24 2.2oz Bag steeps cup after cup of smoky-sweet, complex dark roast coffee from Green Mountain Ground Coffee.')
+            ->setPrice('41.6000')
+            ->setLink('http://www.coffeeforless.com/green-mountain-coffee-french-roast-ground-coffee-24-2-2oz-bag.html')
+            ->setImage('http://mcdn.coffeeforless.com/media/catalog/product/images/uploads/intro/frac_box.jpg')
+            ->setBrand('Green Mountain Coffee')
+            ->setRating('0')
+            ->setCaffeineType('Caffeinated')
+            ->setCount('24')
+            ->setFlavored('No')
+            ->setSeasonal('No')
+            ->setInstock('Yes')
+            ->setFacebook('1')
+            ->setIsKCup('0');
+
         $storageAdapter
             ->expects($this->once())
             ->method('store')
-            ->with([
-                'entity_id' => '340',
-                'CategoryName' => 'Green Mountain Ground Coffee',
-                'sku' => '20',
-                'name' => 'Green Mountain Coffee French Roast Ground Coffee 24 2.2oz Bag',
-                'description' => 'Item description',
-                'shortdesc' => 'Green Mountain Coffee French Roast Ground Coffee 24 2.2oz Bag steeps cup after cup of smoky-sweet, complex dark roast coffee from Green Mountain Ground Coffee.',
-                'price' => '41.6000',
-                'link' => 'http://www.coffeeforless.com/green-mountain-coffee-french-roast-ground-coffee-24-2-2oz-bag.html',
-                'image' => 'http://mcdn.coffeeforless.com/media/catalog/product/images/uploads/intro/frac_box.jpg',
-                'Brand' => 'Green Mountain Coffee',
-                'Rating' => '0',
-                'CaffeineType' => 'Caffeinated',
-                'Count' => '24',
-                'Flavored' => 'No',
-                'Seasonal' => 'No',
-                'Instock' => 'Yes',
-                'Facebook' => '1',
-                'IsKCup' => '0'
-            ]);
+            ->with($feed);
 
         $storageAdapter
             ->expects($this->once())
