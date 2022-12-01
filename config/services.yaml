@@ -4,6 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    env(OUTPUT_CSV_FILENAME): 'output.csv'
 
 services:
     # default configuration for services in *this* file
@@ -27,9 +28,12 @@ services:
         arguments: [ !tagged data.importer ]
 
     App\Adapter\CsvStorageAdapter:
+        calls:
+            - setFilename: [ '%env(string:OUTPUT_CSV_FILENAME)%' ]
         tags:
             - { name: data.importer }
 
     App\Adapter\MySqlStorageAdapter:
         tags:
             - { name: data.importer }
+

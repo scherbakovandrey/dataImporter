@@ -21,6 +21,9 @@ class XmlDataImporterTest extends TestCase
         $xmlDataImporter->process('');
     }
 
+    /**
+     * @throws XmlDataImporterException
+     */
     public function testProcess()
     {
         $storageAdapter = $this->createMock(StorageAdapterInterface::class);

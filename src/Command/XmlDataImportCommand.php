@@ -45,7 +45,7 @@ class XmlDataImportCommand extends Command
             return Command::FAILURE;
         }
 
-        $output->write('The file '.$filename.' was imported successfully, CSV filename: output.csv');
+        $output->write('The file '.$filename.' was imported successfully!');
 
         return Command::SUCCESS;
     }
