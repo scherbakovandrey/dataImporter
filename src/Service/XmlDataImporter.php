@@ -46,6 +46,7 @@ class XmlDataImporter
 
             $fields = [];
             $fields['entity_id'] = (string) $object->entity_id;
+            $fields['CategoryName'] = (string) $object->CategoryName;
             $fields['sku'] = (string) $object->sku;
             $fields['name'] = (string) $object->name;
             $fields['description'] = (string) $object->description;
