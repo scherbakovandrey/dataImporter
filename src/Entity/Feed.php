@@ -170,7 +170,7 @@ class Feed implements StoreAbleInterface
 
     public function toArray(): array
     {
-        // saved initial XML naming
+        // saved initial XML naming, also didn't set the types of the fields but will need to apply the correct ones if save to mysql for instance
         return [
             'entity_id' => $this->entityId,
             'CategoryName' => $this->categoryName,
