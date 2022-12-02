@@ -17,6 +17,7 @@ class CsvStorageAdapterTest extends TestCase
 
         $csvStorageAdapter = new CsvStorageAdapter();
         $csvStorageAdapter->setFilename($tempDirectory.'/'.self::OUTPUT_FILENAME);
+
         $csvStorageAdapter->setSeparator(',');
         $csvStorageAdapter->prepare();
 
