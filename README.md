@@ -41,7 +41,7 @@ For parsing local file:
 
 ```bash
 $ docker pull scherbakovandrey/data-importer
-$ touch ~/output.csv && docker run -v ~/feed.xml:/usr/src/app/feed.xml -v ~/output.csv:/usr/src/app/output.csv scherbakovandrey/data-importer php bin/console app:data-import feed.xml
+$ touch ~/output.csv && docker run -v ~/feed.xml:/usr/src/app/feed.xml -v ~/output.csv:/usr/src/app/output.csv scherbakovandrey/data-importer php bin/console app:data-import /usr/src/app/feed.xml
  ```
 
 ## Tests
