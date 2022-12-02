@@ -23,7 +23,7 @@ You can setup the application in 2 ways:
 1. Clone the application and execute these commands to install the project:
 
 ```bash
-$ cd data-importer/
+$ cd dataImporter/
 $ composer install
 $ php bin/console app:data-importer [filename]
 ```
@@ -49,7 +49,7 @@ $ touch ~/output.csv && docker run -v ~/feed.xml:/usr/src/app/feed.xml -v ~/outp
 Execute these commands to run tests:
 
 ```bash
-$ cd data-importer/
+$ cd dataImporter/
 $ php bin/phpunit
 ```
 [1]: https://symfony.com/doc/current/reference/requirements.html
